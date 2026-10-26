@@ -204,16 +204,7 @@ RADIOlogy/
 
 ## Citation
 
-If you use this work or code, please cite:
-
-```bibtex
-@inproceedings{figueira2027radiology,
-  title     = {RADIOlogy: A Single-Pass Approach to Training-Free Zero-Shot Anomaly Detection},
-  author    = {Figueira, Joaqu{\'\i}n and D'Amicantonio, Giacomo and Bondarau, Egor},
-  booktitle = {Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision (WACV)},
-  year      = {2027}
-}
-```
+To be provided soon, once the paper is available on arXiv or in the WACV 2027 proceedings.
 
 ## License
 
