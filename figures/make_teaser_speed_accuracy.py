@@ -12,8 +12,8 @@ _HERE = os.path.dirname(os.path.abspath(__file__))
 # Data
 # ---------------------------------------------------------------------------
 methods = ["CLIP", "SAA", "WinCLIP", "FADE", "DIVAD", "MRAD-TF", "Ours"]
-i_auroc = [84.8, 66.1, 82.8, 80.5, 72.5, 79.5, 92.6]   # image-level, industrial mean
-p_auroc = [36.5, 71.1, 80.7, 91.7, 91.4, 88.4, 95.2]   # pixel-level, industrial mean
+i_auroc = [84.2, 66.1, 79.9, 80.5, 72.7, 79.7, 92.6]   # image-level, industrial mean
+p_auroc = [39.3, 69.7, 77.9, 91.7, 91.7, 88.4, 95.2]   # pixel-level, industrial mean
 latency = [10.9, 588.5, 249.4, 266.5, 4490.0, 83.4, 35.7]   # ms / image
 
 ACCENT = "#e34948"       # accent color for "Ours"
