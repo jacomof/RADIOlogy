@@ -316,7 +316,7 @@ def main():
         np.savez(os.path.join(sdir, f"{category}.npz"),
                  labels=enc["labels"], defect_types=np.array(enc["defect_types"]),
                  paths=np.array(enc["paths"]), grid=np.array(enc["grid"]),
-                 sam_z=enc["sam_z"], fg_d=enc["fg_d"], fg_mask=enc["fg_mask"],
+                 global_margin=enc["global_margin"], sam_z=enc["sam_z"], fg_d=enc["fg_d"], fg_mask=enc["fg_mask"],
                  **{f"field_{k}": np.stack(v) for k, v in fields.items()})
 
     # Summary over categories.

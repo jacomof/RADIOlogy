@@ -149,7 +149,23 @@ scores the maps.
 
 **Other benchmarks.** Pass `--categories` with the benchmark's category names.
 For the medical benchmarks use `--states clinical` in stage 1, and
-`--text-vocab anatex --text-gate 0.014` in stage 3.
+`--text-vocab anatex --text-gate 0.014` in stage 3. DAGM and KolektorSDD have
+no descriptive category names, so their prompts use the generic word "object":
+add `--prompt-name object` in stage 1.
+
+**KolektorSDD.** Its frames are about 2.5 times taller than wide, so each one is
+split into three bands that are scored independently and stitched back together:
+
+```bash
+python scripts/ksdd_tile.py --src /path/to/ksdd --dst /path/to/ksdd_tiled
+python main_zeroshot.py --data-root /path/to/ksdd_tiled --categories ksdd \
+    --prompt-name object --no-pixel --output-dir results_ksdd
+python scripts/ksdd_stitch.py results_ksdd --orig-root /path/to/ksdd
+```
+
+`ksdd_stitch.py` prints the image and pixel metrics on the original frames. No
+foreground mask is applied, since the language gate disables it on every KSDD
+band.
 
 **Raw-CLIP throughput baseline** (same timing protocol as `main.py`):
 
@@ -189,7 +205,9 @@ RADIOlogy/
 ├── bench_clip_raw_throughput.py  raw-CLIP throughput baseline
 ├── scripts/
 │   ├── zs_text_mask.py           stage 2: cache language-gate inputs
-│   └── zs_combine.py             stage 3: combine fields, mask, score
+│   ├── zs_combine.py             stage 3: combine fields, mask, score
+│   ├── ksdd_tile.py              split KolektorSDD frames into bands
+│   └── ksdd_stitch.py            stitch KolektorSDD bands back and score
 ├── src/
 │   ├── backbones/                RADIO (and raw CLIP for the baseline)
 │   ├── zeroshot.py               prompts, margins, region pooling, affinity refinement, masks
