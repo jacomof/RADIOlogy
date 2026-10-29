@@ -62,7 +62,7 @@ text anchors, `t_n` and `t_a`. The anomaly margin of an embedding `v` is
 
 All numbers are zero-shot and training-free, in %. Image-level: AUROC / max-F1.
 Pixel-level: AUROC / max-F1 / AUPRO (integrated to 30% FPR). Comparisons with
-CLIP, SAA, WinCLIP, FADE, DIVAD and MRAD-TF are in the paper.
+CLIP, SAA+, WinCLIP, FADE, DIVAD and MRAD-TF are in the paper.
 
 | Domain | Dataset | Image AUROC | Image max-F1 | Pixel AUROC | Pixel max-F1 | AUPRO |
 |---|---|:-:|:-:|:-:|:-:|:-:|
@@ -90,7 +90,7 @@ The full pipeline runs at about 36 ms per image (see the teaser figure for the
 latency of every method).
 
 <p align="center">
-  <img src="assets/qualitative_comparison.jpg" width="90%" alt="Anomaly maps on MVTec AD, VisA and medical images from SAA, WinCLIP, FADE, DIVAD, MRAD-TF and RADIOlogy."/>
+  <img src="assets/qualitative_comparison.jpg" width="90%" alt="Anomaly maps on MVTec AD, VisA and medical images from SAA+, WinCLIP, FADE, DIVAD, MRAD-TF and RADIOlogy."/>
   <br/>
   <em>Anomaly maps from RADIOlogy and the training-free baselines.</em>
 </p>
