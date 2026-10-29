@@ -4,6 +4,7 @@ CUDA-synchronized timing as main.py."""
 import os
 
 import matplotlib.pyplot as plt
+plt.rcParams["pdf.fonttype"] = 42  # TrueType, not Type 3 fonts
 import matplotlib.ticker as mticker
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
@@ -11,10 +12,10 @@ _HERE = os.path.dirname(os.path.abspath(__file__))
 # ---------------------------------------------------------------------------
 # Data
 # ---------------------------------------------------------------------------
-methods = ["CLIP", "SAA", "WinCLIP", "FADE", "DIVAD", "MRAD-TF", "Ours"]
-i_auroc = [84.2, 66.1, 79.9, 80.5, 72.7, 79.7, 92.6]   # image-level, industrial mean
-p_auroc = [39.3, 69.7, 77.9, 91.7, 91.7, 88.4, 95.2]   # pixel-level, industrial mean
-latency = [10.9, 588.5, 249.4, 266.5, 4490.0, 83.4, 35.7]   # ms / image
+methods = ["CLIP", "SAA+", "WinCLIP", "FADE", "DIVAD", "MRAD-TF", "Ours"]
+i_auroc = [84.2, 67.9, 79.9, 80.5, 72.7, 79.7, 92.6]   # image-level, industrial mean
+p_auroc = [39.3, 69.4, 77.9, 91.7, 91.7, 88.4, 95.2]   # pixel-level, industrial mean
+latency = [10.9, 617.2, 249.4, 266.5, 4490.0, 83.4, 35.7]   # ms / image
 
 ACCENT = "#e34948"       # accent color for "Ours"
 ACCENT_HALO = "#e3494833"
@@ -41,13 +42,13 @@ plt.rcParams.update({
 
 # Per-method label offsets (dx, dy in points, alignment).
 LABEL_OFFSETS_I = {
-    "CLIP": (0, 14, "center"), "SAA": (0, -14, "center"),
-    "WinCLIP": (12, 10, "left"), "FADE": (0, -18, "center"),
+    "CLIP": (0, 14, "center"), "SAA+": (0, -14, "center"),
+    "WinCLIP": (0, -18, "center"), "FADE": (12, 10, "left"),
     "DIVAD": (0, 14, "center"), "MRAD-TF": (4, 10, "right"),
     "Ours": (0, 16, "center"),
 }
 LABEL_OFFSETS_P = {
-    "CLIP": (0, 14, "center"), "SAA": (0, -14, "center"),
+    "CLIP": (0, 14, "center"), "SAA+": (0, -14, "center"),
     "WinCLIP": (12, 0, "left"), "FADE": (0, 14, "center"),
     "DIVAD": (0, 14, "center"), "MRAD-TF": (-12, -10, "right"),
     "Ours": (0, 15, "center"),

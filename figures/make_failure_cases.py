@@ -10,6 +10,7 @@ import sys
 import numpy as np
 from PIL import Image
 import matplotlib.pyplot as plt
+plt.rcParams["pdf.fonttype"] = 42  # TrueType, not Type 3 fonts
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, REPO)

@@ -2,10 +2,19 @@
 {1, 2, 5, 10} with everything else at the paper configuration. iters=1 is
 highlighted."""
 import os
+from decimal import Decimal, ROUND_HALF_UP
 
 import matplotlib.pyplot as plt
 
+plt.rcParams["pdf.fonttype"] = 42  # TrueType, not Type 3 fonts
+
 _HERE = os.path.dirname(os.path.abspath(__file__))
+
+
+def pct(v):
+    """Fraction (4 decimals) -> percent at 1 decimal, rounded half-up like the
+    paper's tables (0.9215 reads 92.2)."""
+    return float((Decimal(str(v)) * 100).quantize(Decimal("0.1"), ROUND_HALF_UP))
 
 # ---------------------------------------------------------------------------
 # Data
@@ -13,9 +22,9 @@ _HERE = os.path.dirname(os.path.abspath(__file__))
 iters   = [1, 2, 5, 10]
 DECL_I  = 0   # index of iters=1, the default diffusion step count
 
-p_auroc = [0.9215, 0.9231, 0.9247, 0.9241]
-aupro   = [0.8289, 0.8286, 0.8222, 0.8105]
-p_f1    = [0.3898, 0.3954, 0.3991, 0.3922]
+p_auroc = [pct(v) for v in [0.9215, 0.9231, 0.9247, 0.9241]]
+aupro   = [pct(v) for v in [0.8289, 0.8286, 0.8222, 0.8105]]
+p_f1    = [pct(v) for v in [0.3898, 0.3954, 0.3991, 0.3922]]
 
 ACCENT = "#e34948"       # accent color for the default iters=1
 ACCENT_HALO = "#e3494833"
@@ -88,9 +97,9 @@ def panel(ax, y, title, ylim, is_bottom, fmt):
 fig, axes = plt.subplots(3, 1, figsize=(3.3, 7.6), sharex=True)
 # Same y-ranges as the companion context-window (k) figure, for comparability
 # and so this sweep's smaller spread is not visually exaggerated.
-panel(axes[0], p_auroc, "Pixel AUROC",  (0.85, 0.95), False, "{:.3f}")
-panel(axes[1], aupro,   "AUPRO",        (0.70, 0.90), False, "{:.3f}")
-panel(axes[2], p_f1,    "Pixel max-F1", (0.25, 0.50), True,  "{:.3f}")
+panel(axes[0], p_auroc, "Pixel AUROC (%)",  (85, 95), False, "{:.1f}")
+panel(axes[1], aupro,   "AUPRO (%)",        (70, 90), False, "{:.1f}")
+panel(axes[2], p_f1,    "Pixel max-F1 (%)", (25, 50), True,  "{:.1f}")
 
 handles = [
     plt.Line2D([0], [0], marker="*", linestyle="none", markersize=13,

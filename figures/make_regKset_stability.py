@@ -1,10 +1,19 @@
 """Region-pooling K-set (MVTec AD), raw-value view of the
 make_regKset_ablation.py sweep with the [min, max] spread per metric."""
 import os
+from decimal import Decimal, ROUND_HALF_UP
 
 import matplotlib.pyplot as plt
 
+plt.rcParams["pdf.fonttype"] = 42  # TrueType, not Type 3 fonts
+
 _HERE = os.path.dirname(os.path.abspath(__file__))
+
+
+def pct(v):
+    """Fraction (4 decimals) -> percent at 1 decimal, rounded half-up like the
+    paper's tables (0.9215 reads 92.2)."""
+    return float((Decimal(str(v)) * 100).quantize(Decimal("0.1"), ROUND_HALF_UP))
 
 # ---------------------------------------------------------------------------
 # Data (identical to make_regKset_ablation.py)
@@ -15,9 +24,9 @@ declared = [False, False, False, True, False, False, False]
 # spacing at the group boundaries.
 xpos     = [0, 0.24, 0.50, 0.93, 1.25, 1.57, 2.08]
 
-p_auroc = [0.9209, 0.9175, 0.9121, 0.9215, 0.9165, 0.9196, 0.9200]
-aupro   = [0.8143, 0.8278, 0.8234, 0.8289, 0.8315, 0.8305, 0.8331]
-p_f1    = [0.3825, 0.3819, 0.3664, 0.3898, 0.3787, 0.3833, 0.3860]
+p_auroc = [pct(v) for v in [0.9209, 0.9175, 0.9121, 0.9215, 0.9165, 0.9196, 0.9200]]
+aupro   = [pct(v) for v in [0.8143, 0.8278, 0.8234, 0.8289, 0.8315, 0.8305, 0.8331]]
+p_f1    = [pct(v) for v in [0.3825, 0.3819, 0.3664, 0.3898, 0.3787, 0.3833, 0.3860]]
 
 ACCENT = "#e34948"       # accent color for the default {8,32} pair
 ACCENT_HALO = "#e3494833"
@@ -66,8 +75,7 @@ def panel(ax, y, ylabel, ylim, is_bottom, fmt):
                    fontweight="bold" if is_decl else "normal",
                    color=ACCENT if is_decl else INK_SECOND)
 
-    rel = 100.0 * (hi - lo) / y[declared.index(True)]
-    ax.text(0.98, 0.045, f"range {fmt.format(hi - lo)}  ({rel:.1f}%)",
+    ax.text(0.98, 0.045, f"range {fmt.format(hi - lo)} pt",
            transform=ax.transAxes, ha="right", va="bottom",
            fontsize=9.5, color=INK_MUTED, style="italic")
 
@@ -94,9 +102,9 @@ def panel(ax, y, ylabel, ylim, is_bottom, fmt):
 # Axis ranges are wide relative to the data spread, so small differences
 # between configurations do not appear visually exaggerated.
 fig, axes = plt.subplots(3, 1, figsize=(3.3, 9.4), sharex=True)
-panel(axes[0], p_auroc, "Pixel AUROC",  (0.85, 0.95), False, "{:.3f}")
-panel(axes[1], aupro,   "AUPRO",        (0.70, 0.90), False, "{:.3f}")
-panel(axes[2], p_f1,    "Pixel max-F1", (0.25, 0.50), True,  "{:.3f}")
+panel(axes[0], p_auroc, "Pixel AUROC (%)",  (85, 95), False, "{:.1f}")
+panel(axes[1], aupro,   "AUPRO (%)",        (70, 90), False, "{:.1f}")
+panel(axes[2], p_f1,    "Pixel max-F1 (%)", (25, 50), True,  "{:.1f}")
 
 handles = [
     plt.Line2D([0], [0], marker="*", linestyle="none", markersize=13,

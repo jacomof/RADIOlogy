@@ -1,5 +1,5 @@
 """Qualitative localization comparison on MVTec AD, VisA and the medical
-suite: Image | GT | SAA | WinCLIP | FADE | DIVAD | MRAD-TF | Ours.
+suite: Image | GT | SAA+ | WinCLIP | FADE | DIVAD | MRAD-TF | Ours.
 
 FADE is not evaluated on the medical suite and is left blank there.
 """
@@ -9,21 +9,22 @@ import sys
 import numpy as np
 from PIL import Image
 import matplotlib.pyplot as plt
+plt.rcParams["pdf.fonttype"] = 42  # TrueType, not Type 3 fonts
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, REPO)
 from src.data_mvtec import MVTecAD
 
 OURS_ROOT = "/scratch-shared/<user>/results_ours_qualitative"
-SAA_MVTEC = "/scratch-shared/<user>/results_saa_industrial/mvtec"
-SAA_VISA = "/scratch-shared/<user>/results_saa_industrial/visa"
-SAA_MED = "/scratch-shared/<user>/results_saa_medical_industrial_vocab"
+SAA_MVTEC = "/scratch-shared/<user>/results_saa_plus/mvtec"
+SAA_VISA = "/scratch-shared/<user>/results_saa_plus/visa"
+SAA_MED = "/scratch-shared/<user>/results_saa_plus/medical"  # industrial vocabulary
 WINCLIP_MVTEC_OFFICIAL = "/scratch-shared/<user>/results_winclip_industrial_official/mvtec/imgs"
 WINCLIP_VISA_OFFICIAL = "/scratch-shared/<user>/results_winclip_industrial_official/visa/imgs"
 WINCLIP_MED = "/scratch-shared/<user>/results_winclip_medical_v2_industrial_vocab"
 FADE_ROOT = "/home/<user>/BMVC-FADE/experiments"
 DIVAD_ROOT = "/scratch-shared/<user>/divad_runs"
-MRAD_ROOT = "/scratch-shared/<user>/MRAD/results/mrad_qualdump_25853566"
+MRAD_ROOT = "/scratch-shared/<user>/MRAD/results/mrad_qualdump_28661315"
 
 MVTEC_ROOT = "/home/<user>/datasets/mvtecad"
 VISA_ROOT = "/home/<user>/datasets/visa_mvtec/1cls"
@@ -46,7 +47,7 @@ plt.rcParams.update({
     "savefig.facecolor": SURFACE,
 })
 
-COLUMNS = ["Image", "GT", "SAA", "WinCLIP", "FADE", "DIVAD", "MRAD-TF", "Ours"]
+COLUMNS = ["Image", "GT", "SAA+", "WinCLIP", "FADE", "DIVAD", "MRAD-TF", "Ours"]
 
 SELECTIONS = [
     dict(domain="mvtec", cat="hazelnut", defect_type="hole", stem="015",
@@ -235,7 +236,7 @@ def main():
         if industrial:
             saa_dir = SAA_MVTEC if sel["domain"] == "mvtec" else SAA_VISA
             saa_map = load_npz_map(os.path.join(saa_dir, sel["cat"]), idx)
-            panels["SAA"] = overlay(img, saa_map)
+            panels["SAA+"] = overlay(img, saa_map)
             winclip_png = load_winclip_industrial_png(sel, native_size)
             panels["WinCLIP"] = np.array(winclip_png, dtype=np.float32) / 255.0
             fade_map = load_fade_map(sel)
@@ -243,7 +244,7 @@ def main():
         else:
             saa_map = load_npz_map(os.path.join(SAA_MED, sel["cat"]), idx)
             winclip_map = load_npz_map(os.path.join(WINCLIP_MED, sel["cat"]), idx)
-            panels["SAA"] = overlay(img, saa_map)
+            panels["SAA+"] = overlay(img, saa_map)
             panels["WinCLIP"] = overlay(img, winclip_map)
             panels["FADE"] = None  # N/A: excluded from medical suite by design
 
